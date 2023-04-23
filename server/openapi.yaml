@@ -1,0 +1,52 @@
+openapi: 3.0.3
+info:
+  title: Guitar Plugin API
+  version: 1.0.0
+
+paths:
+  /chords:
+    post:
+      summary: Retrieve tabs for the given chords
+      operationId: getTabs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - chords
+              properties:
+                chords:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                    properties:
+                      name:
+                        type: string
+                        example: Cmaj7
+      responses:
+        200:
+          description: Successfully retrieved tabs
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - tabs
+                properties:
+                  tabs:
+                    type: array
+                    items:
+                      type: string
+                      example: >
+                       5 ●│││●● A
+                         ├┼┼┼┼┤
+                         │││●││
+                         ├┼┼┼┼┤
+                         │●●│││
+                         ├┼┼┼┼┤
+                         ││││││
+                         123411

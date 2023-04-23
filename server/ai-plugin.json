@@ -1,0 +1,18 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Guitar Chord Helper",
+  "name_for_model": "guitar_chord_helper",
+  "description_for_human": "Plugin to help you figure out the best voicings & fingerings for guitar chords.",
+  "description_for_model": "Plugin which generates guitar tablature diagrams from a list of chords. The diagrams are rendered in ASCII art.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "PLUGIN_HOSTNAME/openapi.yaml",
+    "is_user_authenticated": false
+  },
+  "logo_url": "PLUGIN_HOSTNAME/logo.png",
+  "contact_email": "jordans@openai.com",
+  "legal_info_url": "https://example.com/legal"
+}
