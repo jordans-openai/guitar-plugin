@@ -2,9 +2,13 @@ package fingering
 
 import "github.com/dustmason/guitar-plugin/voicing"
 
-// Fingering represents which fret each finger should be on to produce a chord. each index is a string.
-// each item is a fret, finger pair
-type Fingering [][2]int
+type GuitarString struct {
+	Fret   int
+	Finger int
+}
+
+// Fingering represents which fret each finger should be on to produce a chord. Each index is a string.
+type Fingering []GuitarString
 
 func GenerateFingerings(chord voicing.Voicing) []Fingering {
 	chordWithFingers := attachPossibleFingers(chord)
@@ -30,7 +34,7 @@ func generateFingeringsInner(chord [][]int, current Fingering, results []Fingeri
 	for _, finger := range head[1:] {
 		if !isInvalidFingering(head[0], finger, current) {
 			newFingering := append(Fingering{}, current...)
-			newFingering = append(newFingering, [2]int{head[0], finger})
+			newFingering = append(newFingering, GuitarString{Fret: head[0], Finger: finger})
 			results = generateFingeringsInner(rest, newFingering, results)
 		}
 	}
@@ -43,7 +47,7 @@ func isInvalidFingering(fret, finger int, fingerings Fingering) bool {
 		return false
 	}
 
-	newFret, newFinger := fingerings[len(fingerings)-1][0], fingerings[len(fingerings)-1][1]
+	newFret, newFinger := fingerings[len(fingerings)-1].Fret, fingerings[len(fingerings)-1].Finger
 	return (fret > newFret && finger < newFinger) ||
 		(fret < newFret && finger > newFinger) ||
 		(finger == newFinger && fret != newFret) ||
@@ -51,10 +55,10 @@ func isInvalidFingering(fret, finger int, fingerings Fingering) bool {
 }
 
 func playableBar(fret, finger int, fingerings Fingering) bool {
-	newFret := fingerings[len(fingerings)-1][0]
+	newFret := fingerings[len(fingerings)-1].Fret
 
 	for _, f := range fingerings {
-		if f[0] > newFret && f[1] == finger {
+		if f.Fret > newFret && f.Finger == finger {
 			return true
 		}
 	}

@@ -1,6 +1,6 @@
 package voicing
 
-func (chord Voicing) CalculateReach() float64 {
+func (chord Voicing) Reach() float64 {
 	chordInts := []int{}
 	for _, v := range chord {
 		if v > 0 {

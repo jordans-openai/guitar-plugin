@@ -5,13 +5,14 @@ import (
 	"github.com/dustmason/guitar-plugin/chord"
 	"github.com/dustmason/guitar-plugin/fingering"
 	"github.com/dustmason/guitar-plugin/voicing"
+	"os"
 	"strings"
 )
 
 const minLines = 3
 
 type Tablature struct {
-	fingering fingering.Fingering // each index is a string. each item is a fret, finger pair
+	fingering fingering.Fingering
 	chordName string
 }
 
@@ -26,16 +27,18 @@ func NewTablature(chordName string) (Tablature, error) {
 	if err != nil {
 		return Tablature{}, err
 	}
-
-	componentNames, _ := c.ComponentNames()
-	fmt.Println("component names", componentNames, "components", components, "c", chordName)
-
 	voicings := voicing.Voicings(components)
-	for i, v := range voicings {
-		fmt.Println(" - v", i, v)
-	}
 	fingerings := fingering.GenerateFingerings(voicings[0])
-	//fmt.Println("fingerings for c", chordName, fingerings[0])
+
+	if os.Getenv("DEV") != "" {
+		componentNames, _ := c.ComponentNames()
+		fmt.Println("component names", componentNames, "components", components, "c", chordName)
+		for i, v := range voicings {
+			fmt.Println(" - v", i, v)
+		}
+		fmt.Println("fingerings for c", chordName, fingerings[0])
+	}
+
 	return Tablature{fingering: fingerings[0], chordName: chordName}, nil
 }
 
@@ -43,13 +46,13 @@ func (c Tablature) String() string {
 	var min, max int
 
 	if len(c.fingering) > 0 {
-		min, max = c.fingering[0][0], c.fingering[0][0]
+		min, max = c.fingering[0].Fret, c.fingering[0].Fret
 		for _, fret := range c.fingering {
-			if fret[0] < min {
-				min = fret[0]
+			if fret.Fret < min {
+				min = fret.Fret
 			}
-			if fret[0] > max {
-				max = fret[0]
+			if fret.Fret > max {
+				max = fret.Fret
 			}
 		}
 	}
@@ -63,9 +66,9 @@ func (c Tablature) String() string {
 	frets := make([]int, len(c.fingering))
 	fingers := make([]int, len(c.fingering))
 	for i, f := range c.fingering {
-		frets[i] = f[0]
-		if f[1] > 0 {
-			fingers[i] = f[1]
+		frets[i] = f.Fret
+		if f.Finger > 0 {
+			fingers[i] = f.Finger
 		}
 	}
 

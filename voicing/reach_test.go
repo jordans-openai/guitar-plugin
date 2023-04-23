@@ -34,7 +34,7 @@ func TestCalculateReach(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			result := tc.chord.CalculateReach()
+			result := tc.chord.Reach()
 			if result != tc.expected {
 				t.Errorf("expected %f, got %f", tc.expected, result)
 			}

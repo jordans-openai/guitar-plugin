@@ -33,13 +33,8 @@ curl -s -X POST \
 Many concepts and ideas were borrowed from [pcorey/chord](https://github.com/pcorey/chord/tree/master)!
 
 ## TODO
-- [] the chords generated should follow logic to chain together well (voice leading, distance, etc)
-- [] by default, the chords generated should be easy to play!
-- 
-## ideas
-- each actual fingering should have an id (stateless) that encodes offset/fret/finger/name
-- the api should accept excludes of ids, to let the user say "do it again, without that chord" or "give me an alternate"
-- the api could return several tabs for each chords, each one with scores for reach, flow, invertedness, etc.
-  they could be sorted with a default rule, and the the model may be smart enough to pick different ones based
-  on user feedback. alternatively, each chord entry in the request could have optional fields to specify
-  which attribute to sort on, and which direction to sort in.
+- [ ] bug: muted and open strings are not handled separately. this ruins the voicing scoring and creates misleading tabs
+- [ ] bug: the finger locations on many chords just look wrong...
+- [ ] the chords generated should follow logic to chain together well (voice leading, distance, etc)
+- [ ] the chords API should accept hints for each chord, like `{"name":"Cmaj7", "hints": {"inversion": 2}}`
+- [ ] render images instead of ASCII

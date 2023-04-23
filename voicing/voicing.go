@@ -3,6 +3,7 @@ package voicing
 import (
 	"fmt"
 	"github.com/dustmason/guitar-plugin/permutation"
+	"sort"
 	"strings"
 )
 
@@ -19,7 +20,13 @@ func Voicings(notes []int) []Voicing {
 	for _, noteSet := range allNoteSets {
 		voicings = buildChords(noteSet, Voicing{}, voicings, requiredNotes)
 	}
-	return removeDuplicates(voicings)
+	voicings = removeDuplicates(voicings)
+	sort.Slice(voicings, func(i, j int) bool {
+		scoreI := voicings[i].Reach() + voicings[i].Spread()
+		scoreJ := voicings[j].Reach() + voicings[j].Spread()
+		return scoreI < scoreJ
+	})
+	return voicings
 }
 
 func generateAllNoteSets(notes []int) ([][]int, map[int]bool) {
